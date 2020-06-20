@@ -11,16 +11,16 @@
                     <v-img
                         class="white--text align-end"
                         height="150px"
-                        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+                        :src="getImgUrl(buger.path)">
                     </v-img>
                     <v-card-title class="pb-0">{{buger.id}}. {{buger.name}}</v-card-title>
                     <v-card-text class="text--primary">
                         Price : {{buger.price}}$
                     </v-card-text>
-                    <v-card-actions>
-                        <v-btn color="orange" text width="30" margin-left="0">-</v-btn>
+                    <v-card-actions class="justify-center">
+                        <v-btn color="orange" text width="30">-</v-btn>
                             {{buger.count}}
-                        <v-btn color="orange" text width="30" margin-left="0">+</v-btn>
+                        <v-btn color="orange" text width="30" class="ml-0">+</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -36,16 +36,16 @@
                     <v-img
                         class="white--text align-end"
                         height="150px"
-                        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+                        :src="getImgUrl(drink.path)">
                     </v-img>
                     <v-card-title class="pb-0">{{drink.id}}. {{drink.name}}</v-card-title>
                     <v-card-text class="text--primary">
                         Price : {{drink.price}}$
                     </v-card-text>
-                    <v-card-actions>
-                        <v-btn color="orange" text width="30" margin-left="0">-</v-btn>
+                    <v-card-actions class="justify-center">
+                        <v-btn color="orange" text width="30">-</v-btn>
                             {{drink.count}}
-                        <v-btn color="orange" text width="30" margin-left="0">+</v-btn>
+                        <v-btn color="orange" text width="30" class="ml-0">+</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -60,7 +60,12 @@ export default {
     computed: mapState({
         getBurgers: state => state.burger,
         getDrinks: state => state.drink
-    })
+    }),
+    methods: {
+        getImgUrl(pic) {
+            return require('../assets/'+pic)
+        }
+    }
 }
 
 </script>
