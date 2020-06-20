@@ -1,5 +1,11 @@
 <template>
-    <div>
-        Lists
-    </div>
+    <v-container fill-height>
+        <div>
+            List
+        </div>
+    </v-container>
 </template>
+
+<script>
+
+</script>
