@@ -12,7 +12,8 @@ export default new Vuex.Store({
       price : 3,
       time : 10,
       count: 0,
-      path: "chicken-burger.jpg"
+      path: "chicken-burger.jpg",
+      type: "b"
     },
     {
       id : 2,
@@ -20,7 +21,8 @@ export default new Vuex.Store({
       price : 4,
       time : 10,
       count: 0,
-      path: "bigmac.jpg"
+      path: "bigmac.jpg",
+      type: "b"
     },
     {
       id : 3,
@@ -28,7 +30,8 @@ export default new Vuex.Store({
       price : 2,
       time : 8,
       count: 0,
-      path: "spicy-burger.jpg"
+      path: "spicy-burger.jpg",
+      type: "b"
     },
     {
       id : 4,
@@ -36,7 +39,8 @@ export default new Vuex.Store({
       price : 3,
       time : 8,
       count: 0,
-      path: "cheese-burger.jpg"
+      path: "cheese-burger.jpg",
+      type: "b"
     }],
     drink: [{
       id : 1,
@@ -44,7 +48,8 @@ export default new Vuex.Store({
       price : 2,
       time : 5,
       count: 0,
-      path: "coca-cola.jpg"
+      path: "coca-cola.jpg",
+      type: "d"
     },
     {
       id : 2,
@@ -52,15 +57,17 @@ export default new Vuex.Store({
       price : 1,
       time : 5,
       count: 0,
-      path: "sprite.jpg"
+      path: "sprite.jpg",
+      type: "d"
     },
     {
       id : 3,
       name : "zero cola",
-      price : 1,
+      price : 2,
       time : 6,
       count: 0,
-      path: "zero-cola.jpg"
+      path: "zero-cola.jpg",
+      type: "d"
     },
     {
       id : 4,
@@ -68,11 +75,36 @@ export default new Vuex.Store({
       price : 1,
       time : 4,
       count: 0,
-      path: "fanta.jpg"
+      path: "fanta.jpg",
+      type: "d"
     }],
+    total: 0,
     orderList: []
   },
-  mutations: {},
+  mutations: {
+    addCounter: function(state, obj) {
+      if (obj.type === "b") {
+        state.burger[obj.id-1].count++;
+        state.total = state.total + state.burger[obj.id-1].price;
+      } else {
+        state.drink[obj.id-1].count++;
+        state.total = state.total + state.drink[obj.id-1].price;
+      }
+    },
+    removeCounter: function(state, obj) {
+      if (obj.type === "b") {
+        if (state.burger[obj.id-1].count !== 0) {
+          state.burger[obj.id-1].count--;
+          state.total = state.total - state.burger[obj.id-1].price;
+        }
+      } else {
+        if (state.drink[obj.id-1].count !== 0) {
+          state.drink[obj.id-1].count--;
+          state.total = state.total - state.drink[obj.id-1].price;
+        }
+      }
+    }
+  },
   actions: {},
   modules: {}
 });
