@@ -52,9 +52,23 @@
         </v-row>
         <v-row class="text-left">
             <v-col>
-                <v-btn outlined color="indigo">order</v-btn>
+                <v-btn outlined color="indigo" @click="checkOrder()">check order</v-btn>
                 <h3 style="display:inline; margin-left:20px">Total : {{getTotal}} $</h3>
             </v-col>
+        </v-row>
+        <v-row>
+            <v-dialog v-model="dialog" persistent max-width="290">
+            <v-card>
+                <v-card-title class="headline">Check order list</v-card-title>
+                <v-card-text class="pb-2" v-for="list in getOrderCheckList.names" :key="list"><h3>{{list}}</h3></v-card-text>
+                <v-card-text><h2>Total: {{getOrderCheckList.price}}$ , Watings: {{getOrderCheckList.time}}s</h2></v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" text @click="controlModal1(false)">Close</v-btn>
+                    <v-btn color="green darken-1" text @click="dialog = false">Order</v-btn>
+                </v-card-actions>
+            </v-card>
+            </v-dialog>
         </v-row>
     </v-container>
 </template>
@@ -63,10 +77,15 @@
 import { mapState } from 'vuex'
 
 export default {
+    data: () => ({
+        dialog: false
+    }),
     computed: mapState({
         getBurgers: state => state.burger,
         getDrinks: state => state.drink,
-        getTotal: state => state.total
+        getOrderCheckList: state => state.orderCheckList,
+        getTotal: state => state.total,
+        getModal: state => state.modal1
     }),
     methods: {
         getImgUrl(pic) {
@@ -77,6 +96,19 @@ export default {
         },
         removeCounter(obj) {
             this.$store.commit('removeCounter', obj);
+        },
+        checkOrder() {
+            this.$store.commit('checkOrder');
+            this.controlModal1(true);
+        },
+        controlModal1(b) {
+            if (!b) {
+                this.$store.commit('resetOrderCheck');
+            }
+            this.dialog = b;
+        },
+        addOrder() {
+
         }
     }
 }
