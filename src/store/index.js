@@ -4,6 +4,9 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  data: {
+    test:""
+  },
   state: {
     counter:0,
     burger: [{
@@ -85,7 +88,8 @@ export default new Vuex.Store({
       price: 0,
       time: 0
     },
-    orderList: []
+    orderList: [],
+    doneList: []
   },
   mutations: {
     addCounter: function(state, obj) {
@@ -125,14 +129,59 @@ export default new Vuex.Store({
           state.orderCheckList.time = state.orderCheckList.time + data.time * data.count;
         }
       });
-      console.log(state.orderCheckList);
     },
     resetOrderCheck: function(state) {
       state.orderCheckList.names = [];
       state.orderCheckList.price = 0;
       state.orderCheckList.time = 0; 
+    },
+    addOrder: function(state) {
+      state.orderList.push(JSON.parse(JSON.stringify(state.orderCheckList))); //shallow copy
+      state.orderCheckList.id++;
+    },
+    resetSelectedCount: function(state) {
+      state.burger.forEach(data => {
+        data.count = 0;
+      });
+      state.drink.forEach(data => {
+        data.count = 0;
+      });
+      state.total = 0;
+    },
+    countDown: function(state) {
+      var it = this;
+      if (typeof state.orderList !== 'undefined' && state.orderList.length > 0) {
+        state.orderList.forEach((data, index) => {
+          if(data.time !=0) {
+            data.time--;
+          } else {
+            it.commit('addDoneList', data);
+            //$store.commit("addDoneList", data);
+            it.commit('deleteList', index);
+          }
+        });
+      } else {
+        console.log("clearInterval");
+        clearInterval(this.test);
+      }
+    },
+    addDoneList: function(state, obj) {
+      console.log("add done list");
+      state.doneList.push(obj);
+      console.log(state.doneList);
+    },
+    deleteList: function(state, index) {
+      state.orderList.splice(index, 1);
+      console.log("delete index " +index);
+      console.log(state.orderList);
     }
   },
-  actions: {},
+  actions: {
+    countDown: function(context) {
+      this.test = setInterval(function(){ 
+        context.commit('countDown');
+      }, 1000);
+    }
+  },
   modules: {}
 });
