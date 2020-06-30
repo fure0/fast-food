@@ -85,7 +85,8 @@ import { mapState } from 'vuex'
 
 export default {
     data: () => ({
-        dialog: false
+        dialog: false,
+        orderCheckList: ""
     }),
     computed: mapState({
         getBurgers: state => state.burger,
@@ -94,9 +95,6 @@ export default {
         getTotal: state => state.total,
         getModal: state => state.modal1
     }),
-    // mounted: function() {
-    //     this.$store.dispatch('countDown');
-    // },
     methods: {
         getImgUrl(pic) {
             return require('../assets/'+pic)
@@ -114,13 +112,14 @@ export default {
         controlModal1(b) {
             if (!b) {
                 this.$store.commit('resetOrderCheck');
-            }
+            } 
+            this.orderCheckList = JSON.parse(JSON.stringify(this.getOrderCheckList));
             this.dialog = b;
         },
         addOrder() {
-            this.$store.commit('addOrder');
+            this.$store.commit('addOrder', this.orderCheckList);
             this.$store.commit('resetOrderCheck');
-            this.$store.dispatch('countDown');
+            this.$store.dispatch('countDown', this.orderCheckList);
             this.resetSelectCount();
             this.dialog = false;
         },

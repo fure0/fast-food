@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   data: {
-    test:""
+    
   },
   state: {
     counter:0,
@@ -135,9 +135,11 @@ export default new Vuex.Store({
       state.orderCheckList.price = 0;
       state.orderCheckList.time = 0; 
     },
-    addOrder: function(state) {
-      state.orderList.push(JSON.parse(JSON.stringify(state.orderCheckList))); //shallow copy
-      state.orderCheckList.id++;
+    addOrder: function(state, obj) {
+      state.orderList.push(JSON.parse(JSON.stringify(obj))); //shallow copy
+      console.log(state.orderList);
+      
+      //state.orderCheckList.id++;
     },
     resetSelectedCount: function(state) {
       state.burger.forEach(data => {
@@ -148,39 +150,41 @@ export default new Vuex.Store({
       });
       state.total = 0;
     },
-    countDown: function(state) {
+    countDown: function(state, obj) {
       var it = this;
-      if (typeof state.orderList !== 'undefined' && state.orderList.length > 0) {
-        state.orderList.forEach((data, index) => {
-          if(data.time !=0) {
-            data.time--;
-          } else {
-            it.commit('addDoneList', data);
-            //$store.commit("addDoneList", data);
-            it.commit('deleteList', index);
-          }
-        });
+
+      if(obj.time !=0) {
+        obj.time--;
       } else {
-        console.log("clearInterval");
-        clearInterval(this.test);
+        it.commit('addDoneList', obj);
+        it.commit('deleteList', obj.id);
+        //$store.commit("addDoneList", data);
       }
+
     },
     addDoneList: function(state, obj) {
       console.log("add done list");
       state.doneList.push(obj);
       console.log(state.doneList);
     },
-    deleteList: function(state, index) {
+    deleteList: function(state, index) { //todo
       state.orderList.splice(index, 1);
       console.log("delete index " +index);
       console.log(state.orderList);
     }
   },
   actions: {
-    countDown: function(context) {
-      this.test = setInterval(function(){ 
-        context.commit('countDown');
+    countDown: function(context, obj) {
+
+      var thread = setInterval(function(){ 
+        context.commit('countDown', obj);
       }, 1000);
+
+      setTimeout(function(){
+        clearInterval(thread);
+        console.log("clearInterval");
+      },obj.time * 1000);
+
     }
   },
   modules: {}
