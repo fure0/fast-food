@@ -119,7 +119,7 @@ export default {
         addOrder() {
             this.$store.commit('addOrder', this.orderCheckList);
             this.$store.commit('resetOrderCheck');
-            this.$store.dispatch('countDown', this.orderCheckList);
+            //this.$store.dispatch('countDown', this.orderCheckList);
             this.resetSelectCount();
             this.dialog = false;
         },

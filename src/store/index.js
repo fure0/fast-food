@@ -136,10 +136,12 @@ export default new Vuex.Store({
       state.orderCheckList.time = 0; 
     },
     addOrder: function(state, obj) {
+      obj.id = state.orderCheckList.id;
       state.orderList.push(JSON.parse(JSON.stringify(obj))); //shallow copy
-      console.log(state.orderList);
-      
-      //state.orderCheckList.id++;
+      state.orderCheckList.id++;
+      //console.log(state.orderList);
+      var lenOrderList = state.orderList.length;
+      this.dispatch('countDown', state.orderList[lenOrderList-1]);
     },
     resetSelectedCount: function(state) {
       state.burger.forEach(data => {
@@ -165,16 +167,23 @@ export default new Vuex.Store({
     addDoneList: function(state, obj) {
       console.log("add done list");
       state.doneList.push(obj);
-      console.log(state.doneList);
+      //console.log(state.doneList);
     },
-    deleteList: function(state, index) { //todo
-      state.orderList.splice(index, 1);
-      console.log("delete index " +index);
-      console.log(state.orderList);
+    deleteList: function(state, id) { //todo
+
+      state.orderList.forEach(function(element, index){
+        if (element.id == id) {
+          state.orderList.splice(index, 1);
+        }  
+      })
+      console.log("delete id " +id);
+      //console.log(state.orderList);
     }
   },
   actions: {
     countDown: function(context, obj) {
+      console.log("codntDown()");
+      console.log(obj);
 
       var thread = setInterval(function(){ 
         context.commit('countDown', obj);
@@ -183,7 +192,7 @@ export default new Vuex.Store({
       setTimeout(function(){
         clearInterval(thread);
         console.log("clearInterval");
-      },obj.time * 1000);
+      },(obj.time * 1000) + 1000);
 
     }
   },
