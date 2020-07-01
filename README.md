@@ -1,5 +1,7 @@
 # fast-food
 
+<img width="1439" alt="fast-food" src="https://user-images.githubusercontent.com/20508342/86284823-8420bc00-bc1e-11ea-979e-e12996425e37.png">
+
 ## Project setup
 ```
 npm install
@@ -20,5 +22,3 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
